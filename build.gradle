@@ -1,0 +1,71 @@
+apply plugin: 'java'
+
+dependencies {
+    compile gradleApi()
+}
+
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.11'
+}
+
+group = 'org.joefernandez'
+version = '1.0-SNAPSHOT'
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //repository(url: uri('../repo'))
+            //repository(url: uri('https://github.com/hankting/test_gradle_plugin')) {
+            repository(url: uri('.')) {
+                authentication(userName: "hankting", password: "hankt0511")
+            }
+        }
+    }
+}
+
+// First, apply the publishing plugin
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.gradle.publish:plugin-publish-plugin:0.9.4"
+  }
+}
+
+apply plugin: "com.gradle.plugin-publish"
+
+// Unless overridden in the pluginBundle config DSL, the project version will
+// be used as your plugin version when publishing
+//version = "1.2"
+// group = "com.foo.myplugin"
+//group = "org.joefernandez.gradle"
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+  website = 'http://www.gradle.org/'
+  vcsUrl = 'https://github.com/gradle/gradle'
+  //vcsUrl = 'https://github.com/hankting/gradle'
+  description = 'Greetings from here!'
+  tags = ['greetings', 'salutations']
+
+  plugins {
+    //greetingsPlugin {
+    //  id = 'org.samples.greeting'
+    //  displayName = 'Gradle Greeting plugin'
+    //}
+    MyJavaPlugin {
+      id = 'org.samples.greeting'
+      displayName = 'Gradle Greeting plugin'
+    }
+  }
+}
